@@ -7,15 +7,29 @@
     "mocha": "^3.0.2",
     "mz": "^2.4.0",
     "react-scripts": "0.2.1",
+    "superagent": "^3.6.0",
     "supertest-as-promised": "^4.0.0"
   },
   "dependencies": {
+    "body-parser": "1.18.1",
     "classnames": "^2.2.5",
+    "cookie-parser": "1.4.3",
     "express": "^4.14.0",
+    "express-session": "1.15.5",
+    "history": "4.7.2",
+    "jquery": "3.2.1",
+    "jsforce": "1.8.0",
     "morgan": "^1.7.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
-    "react-router": "^2.6.1"
+    "react-redux": "5.0.6",
+    "react-router": "3.0.5",
+    "react-router-dom": "4.2.2",
+    "react-router-redux": "5.0.0-alpha.6",
+    "redux": "3.7.2",
+    "redux-thunk": "2.2.0",
+    "request": "2.81.0",
+    "universal-cookie": "2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

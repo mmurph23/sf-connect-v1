@@ -46,3 +46,33 @@ docker run -p 80:9000 --name routed-react-instance routed-react
 ```sh
 npm test
 ```
+
+//applyMiddleware
+http://redux.js.org/docs/api/applyMiddleware.html
+
+//redux thunk
+https://github.com/gaearon/redux-thunk
+
+//redux dev tools
+https://medium.com/@e_himmelfarb/implement-redux-devtools-extension-with-thunk-and-other-async-middleware-20e97100b2b0
+
+//jsx conditional rendering
+http://devnacho.com/2016/02/15/different-ways-to-add-if-else-statements-in-JSX/
+
+
+//jsforce resources
+https://github.com/jsforce/jsforce/issues/242
+https://github.com/jsforce/jsforce/issues/660
+https://github.com/jsforce/jsforce/issues/196
+https://github.com/jsforce/jsforce/issues
+
+
+//alternate to js force?
+https://www.npmjs.com/package/node-salesforce
+
+//good example repository
+https://github.com/gbockus/jsForceInAction
+
+
+//how to server react client from express backend
+https://www.codeproject.com/Articles/1191715/Create-React-App-with-Express-in-Production
