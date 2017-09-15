@@ -34,9 +34,62 @@ const config = {
 
        // Secret key used to encrypt user sessions
        sessionSecretKey : 'mySecretK3y!'
-   }
+ },
 
-}
+//dummy data
+'records': {
+     [ { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000D86Q6AAJ' },
+           Id: '0014100000D86Q6AAJ',
+           Name: 'Test1' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWfeAAH' },
+           Id: '0014100000DEWfeAAH',
+           Name: 'Edge Communications' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWffAAH' },
+           Id: '0014100000DEWffAAH',
+           Name: 'Burlington Textiles Corp of America' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWfgAAH' },
+           Id: '0014100000DEWfgAAH',
+           Name: 'Pyramid Construction Inc.' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWfhAAH' },
+           Id: '0014100000DEWfhAAH',
+           Name: 'Dickenson plc' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWfiAAH' },
+           Id: '0014100000DEWfiAAH',
+           Name: 'Grand Hotels & Resorts Ltd' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWfkAAH' },
+           Id: '0014100000DEWfkAAH',
+           Name: 'Express Logistics and Transport' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWflAAH' },
+           Id: '0014100000DEWflAAH',
+           Name: 'University of Arizona' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWfoAAH' },
+           Id: '0014100000DEWfoAAH',
+           Name: 'GenePoint' },
+          { attributes:
+            { type: 'Account',
+             url: '/services/data/v39.0/sobjects/Account/0014100000DEWfmAAH' },
+           Id: '0014100000DEWfmAAH',
+           Name: 'United Oil & Gas, UK' } ]
+      }
+ }
 
 
 module.exports = config;

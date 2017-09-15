@@ -5,13 +5,6 @@ import {browserHistory} from 'react-router';
 import $ from 'jquery';
 import { bindActionCreators } from 'redux'
 
-import {
-  increment,
-  incrementAsync,
-  decrement,
-  decrementAsync
-} from '../../modules/counter.js'
-
 import { fetchAccounts } from '../../reducers/stateReducer.js';
 
 const login = () => {
@@ -21,19 +14,6 @@ const login = () => {
 const Home = (props) => (
 
        <div>
-            <h1>Home</h1>
-            <p>Count: {props.count}</p>
-
-            <p>
-              <button onClick={props.increment} disabled={props.isIncrementing}>Increment</button>
-              <button onClick={props.incrementAsync} disabled={props.isIncrementing}>Increment Async</button>
-            </p>
-
-            <p>
-              <button onClick={props.decrement} disabled={props.isDecrementing}>Decrementing</button>
-              <button onClick={props.decrementAsync} disabled={props.isDecrementing}>Decrement Async</button>
-            </p>
-
 
            <div className="slds-box slds-theme--shade">
              <p className="slds-text-heading--medium slds-m-bottom--medium">Welcome, please log in with your Salesforce account:</p>
@@ -60,17 +40,10 @@ const Home = (props) => (
 
 
 const mapStateToProps = state => ({
-  count: state.counter.count,
-  isIncrementing: state.counter.isIncrementing,
-  isDecrementing: state.counter.isDecrementing,
   accounts: state.STATE.accounts
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-     increment,
-     incrementAsync,
-     decrement,
-     decrementAsync,
      login,
      fetchAccounts
 }, dispatch);

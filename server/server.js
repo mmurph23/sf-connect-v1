@@ -11,10 +11,8 @@ const bodyParser = require('body-parser');
 // Setup HTTP server
 const app = express();
 
-var at = "";
-var iu = "";
 
-//session
+//initialize session
 app.use(session({secret: 'S3CRE7', resave: true, saveUninitialized: true}));
 
 //bodyParser
@@ -30,22 +28,7 @@ const oauth2 = new jsforce.OAuth2({
     redirectUri : 'http://localhost:3030/token'
 });
 
-
-//Test static assets
-/*
-app.get('/', function(req, res) {
-     res.json([{
-  	Id: 1,
-  	Name: "You didn't get "
-  }, {
-  	Id: 2,
-  	Name: "what you wanted"
-  }]);
-});
-*/
-
 // Serve static assets
-
 app.use(express.static(path.join(__dirname, '../build')));
 
 /**
@@ -76,13 +59,6 @@ app.get('/token', function(req, res) {
         req.session.instanceUrl = conn.instanceUrl;
         req.session.refreshToken = conn.refreshToken;
 
-        at = conn.accessToken;
-        iu = conn.instanceUrl;
-
-        /*
-        console.log('Session Access Token: ' + req.session.accessToken);
-        console.log('Session Instance URL: ' + req.session.instanceUrl);
-        */
         res.redirect('/');
     });
 });
@@ -90,94 +66,33 @@ app.get('/token', function(req, res) {
 app.get('/api/accounts', function(req, res) {
 
     // if auth has not been set, redirect to index
-    /*placeholder
+
     if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
 
-    console.log(at);
-    console.log(iu);
     var query = 'SELECT id, name FROM account LIMIT 10';
 
     var conn = new jsforce.Connection({
         oauth2 : {oauth2},
         accessToken: req.session.accessToken,
-        instanceUrl: req.session.instanceUrl,
-        refreshToken: req.session.refreshToken
+        instanceUrl: req.session.instanceUrl
    });
 
-   conn.on("refresh", function(accessToken, res) {
-  // Refresh event will be fired when renewed access token
-  // to store it in your storage for next request
-  });*/
-
-
-   const records = [ { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000D86Q6AAJ' },
-    Id: '0014100000D86Q6AAJ',
-    Name: 'Test1' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWfeAAH' },
-    Id: '0014100000DEWfeAAH',
-    Name: 'Edge Communications' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWffAAH' },
-    Id: '0014100000DEWffAAH',
-    Name: 'Burlington Textiles Corp of America' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWfgAAH' },
-    Id: '0014100000DEWfgAAH',
-    Name: 'Pyramid Construction Inc.' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWfhAAH' },
-    Id: '0014100000DEWfhAAH',
-    Name: 'Dickenson plc' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWfiAAH' },
-    Id: '0014100000DEWfiAAH',
-    Name: 'Grand Hotels & Resorts Ltd' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWfkAAH' },
-    Id: '0014100000DEWfkAAH',
-    Name: 'Express Logistics and Transport' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWflAAH' },
-    Id: '0014100000DEWflAAH',
-    Name: 'University of Arizona' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWfoAAH' },
-    Id: '0014100000DEWfoAAH',
-    Name: 'GenePoint' },
-  { attributes:
-     { type: 'Account',
-       url: '/services/data/v39.0/sobjects/Account/0014100000DEWfmAAH' },
-    Id: '0014100000DEWfmAAH',
-    Name: 'United Oil & Gas, UK' } ];
-
-   res.json(records);
-
-      /*
    console.log("Connection details for accounts API call: Access Token - " + conn.accessToken + " | URL - " + conn.instanceUrl);
 
-    conn.query(query, function(err, res) {
-        if (err) {
-            console.error("There was an error in the Accounts API call:" + err);
-            res.redirect('/');
-        }
-
-        console.log(res.records);
-        console.log('records returned');
-        const recs = res.records;
-        res.json(recs);
-    }); */
-
+    var records = [];
+    var query = conn.query(query)
+       .on("record", function(record) {
+         records.push(record);
+       })
+       .on("end", function() {
+         console.log("total in database : " + query.totalSize);
+         console.log("total fetched : " + query.totalFetched);
+         res.json(records);
+       })
+       .on("error", function(err) {
+         console.error(err);
+       })
+       .run({ autoFetch : true, maxFetch : 4000 });
 });
 
 app.get("/auth/logged-out", function(req, res) {
@@ -185,98 +100,9 @@ app.get("/auth/logged-out", function(req, res) {
   res.send('Please try again: <a href="/">Home</a>');
 });
 
-
 // Always return the main index.html, so react-router render the route in the client
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });
 
-
 module.exports = app;
-
-
-
-
-/**
-* Logout endpoint
-*/
-
-/*
-server.get('/auth/logout', function(req, res) {
-  var sesh = getSession(req, res);
-  if (sesh == null)
-    return;
-
-  // Revoke OAuth token
-  jsforce.auth.revoke({token: sesh.jsforceAuth.access_token}, function(error) {
-    if (error) {
-      console.error('Force.com OAuth revoke error: '+ JSON.stringify(error));
-      res.status(500).json(error);
-      return;
-    }
-
-    // Destroy server-side session
-    sesh.destroy(function(error) {
-      if (error)
-        console.error('Force.com session destruction error: '+ JSON.stringify(error));
-    });
-
-    // Redirect to server main page
-    return res.redirect('/index.html');
-  });
-});
-*/
-
-/**
-* Endpoint for retrieving currently connected user
-*/
-/*
-server.get('/auth/whoami', function(req, res) {
-  var sesh = getSession(req, res);
-  if (sesh == null)
-    return;
-
-  // req user info from Force.com API
-  jsforce.data.getLoggedUser(sesh.jsforceAuth, function (error, userData) {
-    if (error) {
-      console.log('Force.com identity API error: '+ JSON.stringify(error));
-      res.status(500).json(error);
-      return;
-    }
-    // Return user data
-    res.send(userData);
-    return;
-  });
-});
-*/
-
-/**
-* Endpoint for performing a SOQL query on Force.com
-*/
-/*
-server.get('/query', function(req, res) {
-  var sesh = getSession(req, res);
-  if (sesh == null)
-    return;
-
-  if (!req.query.q) {
-    res.status(400).send('Missing query parameter.');
-    return;
-  }
-
-  const query = encodeURI(req.query.q);
-  const apireqOptions = jsforce.data.createDatareq(sesh.jsforceAuth, 'query?q='+ query);
-
-  httpClient.get(apireqOptions, function (error, payload) {
-    if (error) {
-      console.error('Force.com data API error: '+ JSON.stringify(error));
-      res.status(500).json(error);
-      return;
-    }
-    else {
-      res.send(payload.body);
-      return;
-    }
-  });
-});
-*/
