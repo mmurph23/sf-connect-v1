@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {browserHistory} from 'react-router';
 import $ from 'jquery';
 import { bindActionCreators } from 'redux'
+import CreateCase from '../CreateCase'
 
 import { fetchAccounts } from '../../reducers/stateReducer.js';
 
@@ -34,6 +35,9 @@ const Home = (props) => (
                     <div>{account.Id} - {account.Name}</div>
                   ) : <p>No accounts coming through yet.</p>}
                 </div>
+          </div>
+          <div className="caseFormWrap">
+               <CreateCase />
           </div>
      </div>
 );

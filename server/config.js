@@ -37,6 +37,7 @@ const config = {
  },
 
 //dummy data
+/*
 'records': {
      [ { attributes:
             { type: 'Account',
@@ -88,7 +89,7 @@ const config = {
              url: '/services/data/v39.0/sobjects/Account/0014100000DEWfmAAH' },
            Id: '0014100000DEWfmAAH',
            Name: 'United Oil & Gas, UK' } ]
-      }
+      } */
  }
 
 

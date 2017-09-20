@@ -1,11 +1,32 @@
+import {getValues} from 'redux-form';
+
 //Action creator
 const INITIAL_STATE = "INITIAL_STATE";
+const CREATE_CASE = "CREATE_CASE";
 
+const url = '/api/createCase';
+
+/*let data = {
+          AccountId: '0014100000DOaXBAA1',
+          Origin: 'Web',
+          Subject: 'Test from CLI #4',
+          Description: 'This is a test from the CLI tool',
+          SuppliedName: 'David Lake',
+          SuppliedEmail: 'cli@cli.com'
+     };
+
+const request = new Request('/api/createCase', {
+     method: 'POST',
+     body: JSON.stringify(data),
+     headers:{'content-type': 'application/json'},
+     credentials: 'include'
+});*/
 
 
 
 //Reducer Action
 export const loadAccounts = (accounts) => ({type: INITIAL_STATE, payload: accounts})
+export const sendCaseInfo = (caseNum) => ({type: CREATE_CASE, payload: caseNum})
 
 //helper functions
 
@@ -15,11 +36,51 @@ export const getAccounts = () => {
                .then(res => res.json())
 }
 
-//Action dispatch function, links the fetch call to the the reducer action, which calls the reducer
+export const createCase = (request) => {
+     var body = JSON.stringify(request);
+     console.log('This is the payload from createCase ' + body);
+     return fetch(request)
+               .then(res => res.json())
+}
+
+
+//Action creator function, links the fetch call to the the reducer action, which calls the reducer
 export const fetchAccounts = () => {
      return (dispatch) => {
           getAccounts()
           .then(accounts => dispatch(loadAccounts(accounts)))
+     }
+}
+
+export const dispatchCaseCreate = (payload) => {
+
+     console.log(payload);
+
+     return (dispatch) => {
+
+          let data = {
+               AccountId: payload.AccountId,
+               Origin: 'Web',
+               WebSite: payload.WebSite,
+               Subject: payload.Subject,
+               Description: payload.Description,
+               SuppliedName: payload.SuppliedName,
+               SuppliedEmail: payload.SuppliedEmail
+          }
+
+          console.log("this is the payload from dispatchCaseCreate" + JSON.stringify(data));
+
+          const request = new Request('/api/createCase', {
+               method: 'POST',
+               body: JSON.stringify(data),
+               headers:{'content-type': 'application/json'},
+               credentials: 'include'
+          });
+
+          console.log('This is the request from dispatchCaseCreate' + JSON.stringify(request));
+
+          createCase(request)
+          .then(caseNum => dispatch(sendCaseInfo(caseNum)))
      }
 }
 //Reducer functions
@@ -31,6 +92,8 @@ export default (state = [], action) => {
   switch (action.type) {
     case INITIAL_STATE:
       return {...state, accounts: action.payload}
+    case CREATE_CASE:
+      return {...state, caseNum: actions.payload}
     default:
       return state;
   }
